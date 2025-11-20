@@ -36,7 +36,7 @@
     {
       "name": "__ACCESS__",
       "message": "Module access?",
-      "choices": [
+      "options": [
         "public",
         "restricted"
       ],
@@ -47,7 +47,7 @@
       "name": "__LICENSE__",
       "message": "Choose a license",
       "type": "list",
-      "choices": [
+      "options": [
         "MIT",
         "Apache-2.0",
         "ISC"
