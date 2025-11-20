@@ -4,7 +4,7 @@
   "author": "__USERFULLNAME__ <__USEREMAIL__>",
   "description": "__MODULEDESC__",
   "homepage": "https://github.com/__USERNAME__/__REPONAME__",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "__LICENSE__",
   "publishConfig": {
     "access": "__ACCESS__",
     "directory": "dist"
