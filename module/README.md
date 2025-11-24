@@ -1,18 +1,19 @@
-# __MODULENAME__
+# \_**\_moduleName\_\_**
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" width="250"><br />
-    __MODULEDESC__
+    ____moduleDesc____
 </p>
 
 ## install
 
 ```sh
-npm install __MODULENAME__
+npm install ____moduleName____
 ```
+
 ## Table of contents
 
-- [__MODULENAME__](#__MODULENAME__)
+- [\_**\_moduleName\_\_**](#____moduleName____)
   - [Install](#install)
   - [Table of contents](#table-of-contents)
 - [Developing](#developing)
@@ -39,7 +40,6 @@ pnpm run build:dev
 ## Credits
 
 🛠 Built by LaunchQL — if you like our tools, please checkout and contribute to [our github ⚛️](https://github.com/launchql)
-
 
 ## Disclaimer
 
