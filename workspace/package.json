@@ -1,11 +1,11 @@
 {
-  "name": "____MODULENAME____",
+  "name": "____moduleName____",
   "version": "0.0.1",
-  "author": "____USERFULLNAME____ <____USEREMAIL____>",
+  "author": "____fullName____ <____email____>",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/____USERNAME____/____MODULENAME____"
+    "url": "https://github.com/____username____/____moduleName____"
   },
   "license": "SEE LICENSE IN LICENSE",
   "publishConfig": {

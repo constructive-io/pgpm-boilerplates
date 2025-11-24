@@ -1,8 +1,8 @@
-# ____MODULENAME____
+# ____moduleName____
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" width="250"><br />
-    ____MODULEDESC____
+    ____moduleDesc____
 </p>
 
 ## Developing
