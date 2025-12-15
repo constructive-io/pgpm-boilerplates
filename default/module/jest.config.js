@@ -9,7 +9,13 @@ module.exports = {
     // Ignore build artifacts and type declarations
     testPathIgnorePatterns: ['/dist/', '\\.d\\.ts$'],
     modulePathIgnorePatterns: ['<rootDir>/dist/'],
-    watchPathIgnorePatterns: ['/dist/'],
+
+    // Only watch js, ts, and sql files
+    watchPathIgnorePatterns: [
+      '/dist/',
+      '/node_modules/',
+      '\\.(?!(js|ts|sql)$)[^.]+$'
+    ],
   
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   };
