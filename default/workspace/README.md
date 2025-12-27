@@ -1,7 +1,7 @@
 # ____repoName____
 
 <p align="center" width="100%">
-  <img height="250" src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" />
+  <img height="250" src="https://raw.githubusercontent.com/constructive/constructive/refs/heads/main/assets/outline-logo.svg" />
 </p>
 
 <p align="center" width="100%">
