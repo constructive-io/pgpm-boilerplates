@@ -1,0 +1,22 @@
+{
+    "type": "function",
+    "questions": [
+        {
+            "name": "____functionName____",
+            "message": "Enter the function name",
+            "required": true
+        },
+        {
+            "name": "____functionDesc____",
+            "message": "Enter the function description",
+            "required": true
+        },
+        {
+            "name": "____author____",
+            "message": "Enter author",
+            "setFrom": "workspace.author.name",
+            "defaultFrom": "git.user.name",
+            "required": true
+        }
+    ]
+}
