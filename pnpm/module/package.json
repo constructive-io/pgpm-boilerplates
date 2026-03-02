@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "author": "____fullName____ <____email____>",
   "description": "____moduleDesc____",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
   "homepage": "https://github.com/____username____/____repoName____",
   "license": "____license____",
   "publishConfig": {
@@ -27,6 +30,6 @@
   },
   "keywords": [],
   "devDependencies": {
-    "makage": "0.1.9"
+    "makage": "^0.1.10"
   }
 }

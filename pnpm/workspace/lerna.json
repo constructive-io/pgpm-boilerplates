@@ -10,6 +10,9 @@
   ],
   "registry": "https://registry.npmjs.org",
   "command": {
+    "version": {
+      "syncWorkspaceLock": true
+    },
     "create": {
       "homepage": "https://github.com/____username____/____repoName____",
       "license": "____license____",
