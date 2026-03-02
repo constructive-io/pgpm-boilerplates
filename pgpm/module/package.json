@@ -24,6 +24,6 @@
   "keywords": [],
   "devDependencies": {
     "pgsql-test": "^2.18.15",
-    "makage": "0.1.9"
+    "makage": "^0.1.10"
   }
 }
