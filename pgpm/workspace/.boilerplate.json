@@ -32,6 +32,16 @@
       "optionsFrom": "licenses",
       "required": true
     }
+  ],
+  "skills": [
+    {
+      "source": "constructive-io/constructive",
+      "skills": ["pgpm"]
+    },
+    {
+      "source": "constructive-io/constructive-skills",
+      "skills": ["constructive-data-modeling"]
+    }
   ]
 }
 
