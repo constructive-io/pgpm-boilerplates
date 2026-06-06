@@ -32,6 +32,12 @@
       "optionsFrom": "licenses",
       "required": true
     }
+  ],
+  "skills": [
+    {
+      "source": "constructive-io/constructive",
+      "skills": ["pgpm"]
+    }
   ]
 }
 
