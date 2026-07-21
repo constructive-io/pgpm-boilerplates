@@ -34,9 +34,9 @@ jobs:
           POSTGRES_PASSWORD: password
         options: >-
           --health-cmd "pg_isready -U postgres"
-          --health-interval 10s
+          --health-interval 3s
           --health-timeout 5s
-          --health-retries 5
+          --health-retries 10
         ports:
           - 5432:5432
 
@@ -50,9 +50,9 @@ jobs:
           - 9001:9001
         options: >-
           --health-cmd "curl -f http://localhost:9000/minio/health/live || exit 1"
-          --health-interval 10s
+          --health-interval 3s
           --health-timeout 5s
-          --health-retries 5
+          --health-retries 10
 
     steps:
       - name: Configure Git (for tests)
