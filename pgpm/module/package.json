@@ -23,7 +23,7 @@
   },
   "keywords": [],
   "devDependencies": {
-    "pgsql-test": "^4.9.4",
-    "makage": "^0.3.0"
+    "pgsql-test": "^5.9.7",
+    "makage": "^0.5.1"
   }
 }
