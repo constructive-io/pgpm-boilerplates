@@ -1,0 +1,60 @@
+# Supply-chain policy for this workspace, enforced by pnpm itself.
+#
+# The pnpm settings it produces live in pnpm-workspace.yaml under the
+# `Managed by pnpm-policy` marker. Edit this file, then run:
+#
+#   pnpm run policy
+#
+# `pnpm run policy:check` fails CI when the two drift apart.
+#
+# https://www.npmjs.com/package/pnpm-policy
+
+# A third-party release must be this old before it can be installed. Most
+# malicious releases (compromised maintainer account, typosquat, postinstall
+# stealer) are found and yanked well inside two weeks, so the wait costs little
+# and catches the attacks that move fastest.
+minimumReleaseAge: 14d
+
+# Off by default: turning it on refuses any transitive dependency resolved from
+# git or a URL rather than the registry.
+blockExoticSubdeps: false
+
+# Nothing is exempt by default: everything this workspace installs, including the
+# packages that scaffolded it, waits out the same two weeks.
+#
+# Exemptions are for what *you* publish, and they only start paying off once you
+# do. npm reserves `@<your-username>` for you, so that scope is safe to claim as
+# soon as you publish into it — waiting two weeks on your own release protects
+# nothing:
+#
+#   scopes:
+#     - "@____username____"
+#
+# If you publish under an npm account whose packages are not all in one scope,
+# name the account instead and let pnpm-policy ask npm what it publishes
+# (`pnpm pnpm-policy inventory`):
+#
+#   maintainers:
+#     - ____username____
+#   inventory: ./pnpm-policy.inventory.json
+scopes: []
+
+# Dependencies permitted to run install scripts. An install script is arbitrary
+# code at install time, so each entry is a deliberate decision and the value is
+# the reason it is needed:
+#
+#   allowBuilds:
+#     esbuild: native binary, downloaded at install time
+#     sharp: libvips bindings
+allowBuilds: []
+
+# Escape hatch for a third-party package that cannot wait — an urgent security
+# release, typically. A reason is required, and `until` expires the waiver so
+# `check` forces a re-justification instead of letting it become permanent:
+#
+#   exceptions:
+#     - package: lodash
+#       versions: ["4.17.21"]
+#       reason: CVE-2021-23337 fix, published today
+#       until: 2026-09-01
+exceptions: []

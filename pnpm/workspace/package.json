@@ -20,7 +20,9 @@
     "clean": "pnpm -r run clean",
     "test": "pnpm -r run test",
     "lint": "pnpm -r run lint",
-    "deps": "pnpm up -r -i -L"
+    "deps": "pnpm up -r -i -L",
+    "policy": "pnpm-policy generate",
+    "policy:check": "pnpm-policy check"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
@@ -34,6 +36,7 @@
     "jest": "^30.2.0",
     "lerna": "^9.0.3",
     "makage": "^0.5.1",
+    "pnpm-policy": "^0.2.2",
     "prettier": "^3.7.4",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
