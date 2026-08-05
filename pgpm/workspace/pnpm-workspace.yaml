@@ -1,2 +1,16 @@
 packages:
   - 'packages/*'
+
+# Managed by pnpm-policy — run `pnpm-policy generate` after editing pnpm-policy.yaml.
+
+# A third-party release must be 2w old before it can be installed.
+# Most malicious releases are found and yanked well inside that window.
+minimumReleaseAge: 20160
+
+# Exempt from the wait: 1 scope glob(s).
+# First-party membership comes from the scopes claimed in pnpm-policy.yaml.
+minimumReleaseAgeExclude:
+  - "@____username____/*"
+
+# Off: transitive dependencies may resolve from git or a URL.
+blockExoticSubdeps: false

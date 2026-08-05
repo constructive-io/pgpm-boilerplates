@@ -77,6 +77,11 @@ jobs:
       - name: Install
         run: pnpm install
 
+      # Fails when pnpm-workspace.yaml no longer matches pnpm-policy.yaml, or when a
+      # third-party waiver has passed its expiry date.
+      - name: Check supply-chain policy
+        run: pnpm run policy:check
+
       - name: Cache pgpm CLI
         id: cache-pgpm
         uses: actions/cache@v4

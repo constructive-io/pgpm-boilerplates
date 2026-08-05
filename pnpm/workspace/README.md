@@ -31,6 +31,23 @@ pnpm build
 pnpm lint
 ```
 
+### Supply-chain policy
+
+A third-party release must be 14 days old before this workspace will install it, which is where most compromised releases are caught. Packages in `@____username____` are exempt, and `pnpm-policy.yaml` is where you widen that, approve an install script, or waive the wait for an urgent security release:
+
+```sh
+pnpm run policy        # regenerate the managed block in pnpm-workspace.yaml
+pnpm run policy:check  # CI: fail on drift or an expired waiver
+```
+
+See [pnpm-policy](https://www.npmjs.com/package/pnpm-policy) for the full configuration.
+
+Nothing is locked yet on the very first install, so it resolves every version from the registry and trips if any of them is newer than the wait. Get past it once, then commit the lockfile it produces — from then on installs replay the lockfile and the wait only applies to versions you are adding:
+
+```sh
+pnpm install --config.minimumReleaseAge=0
+```
+
 ### Prerequisites
 
 - Node.js 20+
