@@ -35,18 +35,6 @@ cd packages/your-module
 pnpm test:watch
 ```
 
-### Supply-chain defaults
-
-`pnpm-workspace.yaml` makes two settings explicit, and both are worth keeping: a release must be 14 days old before pnpm will install it, and no dependency may run an install script. Most registry attacks are caught within days of publication, so the wait means your install never sees them.
-
-Nothing is locked yet on the very first install, so it resolves every version from the registry and fails if any of them is newer than the wait. Get past it once, then commit the lockfile — from then on installs replay the lockfile and the wait only applies to versions you are adding:
-
-```sh
-pnpm install --config.minimumReleaseAge=0
-```
-
-If you publish to npm yourself, waiting on your own releases protects nothing; [pnpm-policy](https://www.npmjs.com/package/pnpm-policy) generates these settings with your own packages exempted.
-
 ### Prerequisites
 
 - Node.js 20+

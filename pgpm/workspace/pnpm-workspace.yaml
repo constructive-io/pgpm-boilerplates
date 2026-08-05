@@ -1,19 +1,9 @@
 packages:
   - 'packages/*'
 
-# A release must be 14 days old (20160 minutes) before it can be installed.
-# Attacks on the registry — a hijacked maintainer account, a typosquat, a
-# postinstall that reads your environment — are usually caught and yanked within
-# days of publication, so waiting means your install never sees them. Add a
-# package to minimumReleaseAgeExclude to skip the wait for it, e.g. a security fix
-# you need today, or your own packages once you publish some.
+# 14 days, in minutes. A release younger than this is not installable; add a
+# package to minimumReleaseAgeExclude to skip the wait for it.
 minimumReleaseAge: 20160
 
-# Packages allowed to run install scripts, which are arbitrary code executed on
-# your machine and in your CI at install time. pnpm blocks them unless listed
-# here, so add one only when a package genuinely needs it:
-#
-#   onlyBuiltDependencies:
-#     - esbuild
-#     - sharp
+# Dependencies allowed to run install scripts. Nothing is, until it is listed.
 onlyBuiltDependencies: []
