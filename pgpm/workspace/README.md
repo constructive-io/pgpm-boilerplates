@@ -35,6 +35,21 @@ cd packages/your-module
 pnpm test:watch
 ```
 
+### Supply-chain policy
+
+A release has to be 14 days old before this workspace will install it, and no dependency may run an install script. That is where most registry attacks are caught: a hijacked account or a typosquat is usually yanked within days, and by then your install has never seen it. `pnpm-policy.yaml` is where you approve an install script or waive the wait for a security fix you need today:
+
+```sh
+pnpm run policy        # rewrite the managed block in pnpm-workspace.yaml
+pnpm run policy:check  # CI: fail on drift or an expired waiver
+```
+
+Nothing is locked yet on the very first install, so it resolves every version from the registry and trips if any of them is newer than the wait. Get past it once, then commit the lockfile — from then on installs replay the lockfile and the wait only applies to versions you are adding:
+
+```sh
+pnpm install --config.minimumReleaseAge=0
+```
+
 ### Prerequisites
 
 - Node.js 20+
