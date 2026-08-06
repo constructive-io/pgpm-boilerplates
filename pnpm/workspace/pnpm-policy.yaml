@@ -1,0 +1,42 @@
+# Supply-chain policy for this workspace, enforced by pnpm itself.
+#
+# It produces the settings in pnpm-workspace.yaml under the `Managed by
+# pnpm-policy` marker. Edit this file, then run:
+#
+#   pnpm run policy        # rewrite the managed block
+#   pnpm run policy:check  # CI: fail if the two drift apart
+
+# How old a release must be before this workspace will install it. Attacks on the
+# registry — a hijacked maintainer account, a typosquat, a postinstall that reads
+# your environment — are usually caught and yanked within days of publication, so
+# a short wait removes most of the exposure and costs you nothing but currency.
+minimumReleaseAge: 2d
+
+# Packages allowed to run install scripts, which are arbitrary code executed on
+# your machine (and your CI) at install time. pnpm blocks them unless listed, so
+# add one only when a package genuinely needs it, and say why:
+#
+#   allowBuilds:
+#     esbuild: native binary, downloaded at install time
+#     sharp: libvips bindings
+allowBuilds: []
+
+# Transitive dependencies must come from the registry, not from a git or URL
+# reference that no wait or integrity check applies to.
+blockExoticSubdeps: true
+
+# Skip the wait for a specific package — the case that matters is a security fix
+# published today that you need today. A reason is required, and `until` expires
+# the waiver so `policy:check` makes you re-justify it instead of letting it live
+# forever:
+#
+#   exceptions:
+#     - package: lodash
+#       versions: ["4.17.21"]
+#       reason: CVE-2021-23337 fix, published today
+#       until: 2026-09-01
+exceptions: []
+
+# Publishing to npm yourself? Then waiting on your own releases protects nothing,
+# and pnpm-policy can exempt them by scope or by npm account:
+# https://www.npmjs.com/package/pnpm-policy

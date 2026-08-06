@@ -20,6 +20,8 @@
     "test": "pnpm -r run test",
     "lint": "pnpm -r run lint",
     "deps": "pnpm up -r -i -L",
+    "policy": "pnpm-policy generate",
+    "policy:check": "pnpm-policy check",
     "version": "pgpm sync-versions && git add -A"
   },
   "devDependencies": {
@@ -36,6 +38,7 @@
     "makage": "^0.5.1",
     "pgpm": "^5.19.1",
     "pgsql-test": "^5.9.7",
+    "pnpm-policy": "^0.2.2",
     "prettier": "^3.7.4",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
