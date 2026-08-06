@@ -1,9 +1,11 @@
 packages:
   - 'packages/*'
 
-# 14 days, in minutes. A release younger than this is not installable; add a
-# package to minimumReleaseAgeExclude to skip the wait for it.
-minimumReleaseAge: 20160
+# Managed by pnpm-policy — run `pnpm-policy generate` after editing pnpm-policy.yaml.
 
-# Dependencies allowed to run install scripts. Nothing is, until it is listed.
-onlyBuiltDependencies: []
+# A third-party release must be 2d old before it can be installed.
+# Most malicious releases are found and yanked well inside that window.
+minimumReleaseAge: 2880
+
+# Transitive dependencies must come from the registry, not from git or a URL.
+blockExoticSubdeps: true
