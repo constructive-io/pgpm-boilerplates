@@ -33,6 +33,9 @@ pgpm init
 # Navigate to your module and run tests
 cd packages/your-module
 pnpm test:watch
+
+# Audit every module's schema (security + performance grades, see safegres.config.js)
+pnpm run audit:db
 ```
 
 ### Prerequisites

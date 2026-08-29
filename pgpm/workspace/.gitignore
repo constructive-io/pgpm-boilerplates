@@ -3,3 +3,6 @@
 **/dist
 **/pnpm-debug.log
 lerna-debug.log
+# safegres audit output (`pnpm run audit:db`) — re-derived every run, uploaded
+# as a CI artifact. The perf baseline beside it IS committed.
+**/safegres-reports/

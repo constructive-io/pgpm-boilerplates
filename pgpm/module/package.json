@@ -19,11 +19,14 @@
   "scripts": {
     "lint": "eslint . --fix",
     "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watchAll",
+    "audit:db": "safegres audit",
+    "audit:db:baseline": "safegres audit --write-perf-baseline safegres-perf-baseline.json"
   },
   "keywords": [],
   "devDependencies": {
     "pgsql-test": "^5.9.7",
-    "makage": "^0.5.1"
+    "makage": "^0.5.1",
+    "safegres": "^1.22.0"
   }
 }
