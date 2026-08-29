@@ -109,3 +109,18 @@ jobs:
       - name: Test ${{ matrix.package }}
         run: cd ./packages/${{ matrix.package }} && pnpm test
 
+      # The security + performance audit of the schema this module deploys
+      # (safegres, configured in the module's safegres.config.js): it deploys
+      # into an ephemeral database and scans the catalog, so it needs nothing
+      # the tests above did not already need. Gates on the security grade and
+      # on perf findings absent from the committed baseline.
+      - name: Database audit ${{ matrix.package }}
+        run: cd ./packages/${{ matrix.package }} && pnpm run --if-present audit:db
+
+      - name: Upload audit reports
+        if: always() && hashFiles(format('packages/{0}/safegres-reports/safegres.md', matrix.package)) != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: safegres-reports-${{ matrix.package }}
+          path: packages/${{ matrix.package }}/safegres-reports/
+

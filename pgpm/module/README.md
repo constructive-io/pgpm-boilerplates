@@ -29,6 +29,27 @@ pnpm test:watch
 pgpm deploy --database your_db --createdb --yes
 ```
 
+## Auditing
+
+[safegres](https://www.npmjs.com/package/safegres) grades this module's schema on
+two independent axes — security (grants, RLS, policy coverage and behavior) and
+performance (predicates no index can serve, per-row function calls, foreign keys
+without a covering index):
+
+```sh
+# Audit: deploys this module into an ephemeral database and scans its catalog
+pnpm run audit:db
+
+# Accept today's performance findings as debt, so CI gates only on new ones
+pnpm run audit:db:baseline
+
+# Audit a database you already have instead
+pnpm exec safegres audit --database your_db
+```
+
+The gates and the exposed surface to grade against live in `safegres.config.js`;
+the run also writes JSON, markdown and SARIF reports to `safegres-reports/`.
+
 ## Credits
 
 **🛠 Built by the [Constructive](https://constructive.io) team — creators of modular Postgres tooling for secure, composable backends. If you like our work, contribute on [GitHub](https://github.com/constructive-io).**
