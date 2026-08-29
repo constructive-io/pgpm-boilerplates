@@ -49,6 +49,12 @@ pnpm exec safegres audit --database your_db
 
 The gates and the exposed surface to grade against live in `safegres.config.js`;
 the run also writes JSON, markdown and SARIF reports to `safegres-reports/`.
+`safegres-perf-baseline.json` starts empty and is committed — it is the accepted
+performance debt, and the only audit file that carries state.
+
+Declaring `exposure` in the config is the first thing worth doing: until the audit
+knows which schemas and roles your API reaches it has to assume the whole database
+is, and caps the score at the `B` the gate allows.
 
 ## Credits
 

@@ -22,6 +22,10 @@ module.exports = {
 
   source: { pgpm: '.' },
 
+  // The pgpm ledger is the package manager's own bookkeeping — it lands in
+  // every database beside your module and is nobody's API. Audit your schema.
+  excludeSchemas: ['pgpm_migrate'],
+
   // What your API actually exposes. Findings outside the exposed surface are
   // reported as internal advisories rather than scored — and with no surface
   // declared safegres has to assume the whole database is reachable, which it
