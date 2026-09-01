@@ -27,6 +27,6 @@
   "devDependencies": {
     "pgsql-test": "^5.9.7",
     "makage": "^0.5.1",
-    "safegres": "^1.22.0"
+    "safegres": "^1.23.0"
   }
 }

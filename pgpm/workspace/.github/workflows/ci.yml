@@ -12,6 +12,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     continue-on-error: true
+
+    # `actions: read` lets the audit find the base branch's previous report to
+    # measure the delta against; `pull-requests: write` lets it post that as a
+    # sticky comment.
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: write
+
     strategy:
       fail-fast: false
       matrix:
@@ -114,13 +123,21 @@ jobs:
       # into an ephemeral database and scans the catalog, so it needs nothing
       # the tests above did not already need. Gates on the security grade and
       # on perf findings absent from the committed baseline.
+      #
+      # The action is the same `pnpm run audit:db` plus everything a run should
+      # report: a job summary, inline annotations, a sticky PR comment, and the
+      # delta against the base branch's last report — which it finds by
+      # downloading the reports artifact it uploads itself, one per package, so
+      # the two names have to agree. `version: local` runs the safegres this
+      # workspace pins:
+      # auditing a pgpm module deploys it through pgsql-test, an optional peer
+      # a globally installed CLI cannot resolve.
       - name: Database audit ${{ matrix.package }}
-        run: cd ./packages/${{ matrix.package }} && pnpm run --if-present audit:db
-
-      - name: Upload audit reports
-        if: always() && hashFiles(format('packages/{0}/safegres-reports/safegres.md', matrix.package)) != ''
-        uses: actions/upload-artifact@v4
+        uses: constructive-io/constructive/packages/safegres@safegres-action-v1
         with:
-          name: safegres-reports-${{ matrix.package }}
-          path: packages/${{ matrix.package }}/safegres-reports/
+          version: local
+          working-directory: packages/${{ matrix.package }}
+          artifact-name: safegres-reports-${{ matrix.package }}
+          compare-artifact: safegres-reports-${{ matrix.package }}
+          comment: true
 
