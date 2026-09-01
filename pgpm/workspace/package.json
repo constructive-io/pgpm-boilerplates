@@ -41,7 +41,7 @@
     "pgsql-test": "^5.9.7",
     "pnpm-policy": "^0.2.2",
     "prettier": "^3.7.4",
-    "safegres": "^1.22.0",
+    "safegres": "^1.23.0",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
