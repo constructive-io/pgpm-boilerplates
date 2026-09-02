@@ -38,6 +38,21 @@ pnpm test:watch
 pnpm run audit:db
 ```
 
+### Working with an AI agent
+
+`pgpm init workspace` installed the `pgpm` skill at `.agents/skills/pgpm/` — a guide to
+pgpm's commands, the deploy/revert/verify pattern, plan files, dependencies, testing, and
+CI. Agents that read `.agents/skills/` (Codex, Cursor, Gemini CLI, opencode, ...) pick it
+up automatically; see [AGENTS.md](./AGENTS.md).
+
+For an agent that looks elsewhere — Claude Code reads `.claude/skills/` — either point it
+at `.agents/skills/pgpm/SKILL.md` directly, or install the skill into the location it
+expects:
+
+```sh
+npx skills add https://github.com/constructive-io/constructive --skill pgpm
+```
+
 ### Prerequisites
 
 - Node.js 20+
