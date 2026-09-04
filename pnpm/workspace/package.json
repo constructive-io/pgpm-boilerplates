@@ -25,9 +25,10 @@
     "policy:check": "pnpm-policy check"
   },
   "devDependencies": {
+    "@constructive-io/eslint-config": "^0.2.0",
+    "@constructive-io/pnpm-policy": "0.3.2",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.0.3",
-    "@constructive-io/eslint-config": "^0.2.0",
     "eslint": "^9.39.2",
     "jest": "^30.2.0",
     "lerna": "^9.0.3",

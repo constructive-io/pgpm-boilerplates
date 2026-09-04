@@ -54,6 +54,25 @@ blockExoticSubdeps: true
 #       until: 2026-09-01
 exceptions: []
 
-# Publishing to npm yourself? Then waiting on your own releases protects nothing,
-# and pnpm-policy can exempt them by scope or by npm account:
-# https://www.npmjs.com/package/pnpm-policy
+# Waiting on a release protects you from a compromised *third party*. The
+# toolchain this workspace runs on (pgpm, makage, pnpm-policy, the @pgpmjs and
+# @constructive-io packages, the graphile stack pgpm builds on) is published by the
+# same people who wrote this template, so those skip the wait — otherwise every
+# fresh scaffold would refuse to install for two days after each of their releases.
+#
+# Scopes are exempted as globs. Unscoped names come from published inventories,
+# pinned in package.json so a change in what skips the wait arrives as a version
+# bump you can review. `intersect: false` because a fresh scaffold has no lockfile
+# to intersect against yet; flip it on once you have one if you prefer a shorter
+# pnpm-workspace.yaml.
+scopes:
+  - "@constructive-io"
+  - "@constructive-db"
+  - "@launchql"
+  - "@pgpm"
+  - "@pgpmjs"
+  - "@pgsql"
+inventory:
+  - "@constructive-io/pnpm-policy/inventory.json"
+  - "@constructive-io/pnpm-policy-graphile/inventory.json"
+intersect: false
