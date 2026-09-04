@@ -9,3 +9,8 @@ minimumReleaseAge: 2880
 
 # Transitive dependencies must come from the registry, not from git or a URL.
 blockExoticSubdeps: true
+allowBuilds:
+  "@launchql/protobufjs": false
+  "@parcel/watcher": false
+  nx: false
+  unrs-resolver: false

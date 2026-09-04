@@ -9,7 +9,7 @@
   },
   "license": "____license____",
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=22"
   },
   "publishConfig": {
     "access": "restricted"
@@ -28,18 +28,14 @@
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/node": "^25.0.3",
-    "@typescript-eslint/eslint-plugin": "^8.50.1",
-    "@typescript-eslint/parser": "^8.50.1",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
-    "eslint-plugin-unused-imports": "^4.3.0",
+    "@constructive-io/eslint-config": "^0.2.0",
     "eslint": "^9.39.2",
     "jest": "^30.2.0",
     "lerna": "^9.0.3",
     "makage": "^0.5.1",
     "pgpm": "^5.19.1",
     "pgsql-test": "^5.9.7",
-    "pnpm-policy": "^0.2.2",
+    "pnpm-policy": "^0.4.0",
     "prettier": "^3.7.4",
     "safegres": "^1.23.0",
     "ts-jest": "^29.4.6",

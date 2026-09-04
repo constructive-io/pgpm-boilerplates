@@ -21,6 +21,23 @@ minimumReleaseAge: 2d
 #     sharp: libvips bindings
 allowBuilds: []
 
+# pnpm treats an install script that is neither allowed nor denied as an open
+# question: it warns, and pnpm 11 refuses to install until someone answers the
+# interactive `pnpm approve-builds` prompt. Answer here instead, so a fresh clone
+# installs without a prompt and the decision is reviewed like any other code.
+# `false` means "we looked, this script is not needed" — each of these ships a
+# prebuilt binary as an optional dependency and only compiles as a fallback.
+#
+# When a new dependency shows up in ERR_PNPM_IGNORED_BUILDS, add it here (or to
+# allowBuilds above, with a reason) and run `pnpm run policy`. Do not run
+# `pnpm approve-builds`: it writes outside the managed block and fails policy:check.
+settings:
+  allowBuilds:
+    "@launchql/protobufjs": false # postinstall only prints a version-scheme notice
+    "@parcel/watcher": false # prebuilt binary ships as an optional dep
+    nx: false # prebuilt binary ships as an optional dep
+    unrs-resolver: false # prebuilt binary ships as an optional dep
+
 # Transitive dependencies must come from the registry, not from a git or URL
 # reference that no wait or integrity check applies to.
 blockExoticSubdeps: true

@@ -21,10 +21,10 @@ This workspace was generated with `pgpm init workspace`. For a complete guide on
 # Install dependencies
 pnpm install
 
-# Start PostgreSQL (requires Docker)
+# Start PostgreSQL (requires Docker) and load its connection variables.
+# Already running your own PostgreSQL? Skip both lines and export
+# PGHOST/PGPORT/PGUSER/PGPASSWORD for a superuser instead.
 pgpm docker start
-
-# Load environment variables
 eval "$(pgpm env)"
 
 # Create a module
@@ -37,6 +37,30 @@ pnpm test:watch
 # Audit every module's schema (security + performance grades, see safegres.config.js)
 pnpm run audit:db
 ```
+
+### Using your own PostgreSQL
+
+`pgpm docker start` is a convenience, not a requirement. If PostgreSQL (17+) is already
+running on your machine, point pgpm at it and carry on — nothing else changes:
+
+```sh
+export PGHOST=localhost PGPORT=5432 PGUSER=postgres PGPASSWORD=yourpassword
+pgpm admin-users bootstrap --yes   # once: creates the roles pgpm and tests expect
+```
+
+Don't run `eval "$(pgpm env)"` in that case: it prints the Docker container's defaults
+(`postgres`/`password` on `localhost:5432`) and would overwrite yours. If you want the
+Docker container *alongside* an existing server, give it another port and match it:
+`pgpm docker start --port 5433` then `export PGPORT=5433`.
+
+### Install scripts
+
+`pnpm install` never asks you to approve build scripts here: every dependency that
+wants to run code at install time already has a decision in `pnpm-policy.yaml`. If a
+new dependency stops the install with `ERR_PNPM_IGNORED_BUILDS`, add it there — under
+`allowBuilds` with a reason if it truly needs its script, or as `false` if it does not —
+and run `pnpm run policy`. Don't use `pnpm approve-builds`; it writes outside the
+managed block and `pnpm run policy:check` will fail.
 
 ### Working with an AI agent
 
@@ -55,9 +79,9 @@ npx skills add https://github.com/constructive-io/constructive --skill pgpm
 
 ### Prerequisites
 
-- Node.js 20+
+- Node.js 22+
 - pnpm
-- Docker
+- Docker, or a local PostgreSQL 17+ you have superuser credentials for
 - PostgreSQL client tools (`psql`)
 - pgpm (`npm install -g pgpm`)
 
