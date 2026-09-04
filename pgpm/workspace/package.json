@@ -35,7 +35,7 @@
     "makage": "^0.5.1",
     "pgpm": "^5.19.1",
     "pgsql-test": "^5.9.7",
-    "pnpm-policy": "^0.4.0",
+    "pnpm-policy": "^0.5.0",
     "prettier": "^3.7.4",
     "safegres": "^1.23.0",
     "ts-jest": "^29.4.6",
