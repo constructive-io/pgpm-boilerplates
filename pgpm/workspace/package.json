@@ -15,8 +15,8 @@
     "access": "restricted"
   },
   "scripts": {
-    "build": "pnpm -r run build",
-    "clean": "pnpm -r run clean",
+    "build": "pnpm -r run --if-present build",
+    "clean": "pnpm -r run --if-present clean",
     "test": "pnpm -r run test",
     "audit:db": "pnpm -r run --if-present audit:db",
     "lint": "pnpm -r run lint",
