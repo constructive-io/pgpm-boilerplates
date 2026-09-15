@@ -12,5 +12,9 @@
     "resolveJsonModule": true,
     "moduleResolution": "node"
   },
+  // No default file set: modules scaffolded from pgpm/module ship a jest.config.js but no
+  // tsconfig of their own, so ts-jest falls back to this file — without an explicit file
+  // set TypeScript would type-check every .ts in the workspace for each Jest worker.
+  "files": [],
   "exclude": ["dist", "node_modules"]
 }
