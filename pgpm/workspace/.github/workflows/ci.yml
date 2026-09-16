@@ -11,7 +11,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    continue-on-error: true
 
     # `actions: read` lets the audit find the base branch's previous report to
     # measure the delta against; `pull-requests: write` lets it post that as a
@@ -105,9 +104,6 @@ jobs:
       # and synchronous commit avoids checkpoint I/O stalls on CI runners.
       - name: Tune Postgres for CI (disable durability)
         run: pgpm tune --yes
-
-      - name: Build
-        run: pnpm -r build
 
       - name: Seed pg and app_user
         run: |
