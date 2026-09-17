@@ -24,12 +24,10 @@
     "deps": "pnpm up -r -i -L",
     "policy": "pnpm-policy generate",
     "policy:check": "pnpm-policy check",
-    "version": "pgpm sync-versions && git add -A"
+    "version": "pgpm sync-versions"
   },
   "devDependencies": {
     "@constructive-io/eslint-config": "^0.2.0",
-    "@constructive-io/pnpm-policy": "0.3.2",
-    "@constructive-io/pnpm-policy-graphile": "0.2.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.0.3",
     "eslint": "^9.39.2",
