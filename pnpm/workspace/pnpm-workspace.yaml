@@ -14,8 +14,8 @@ allowBuilds:
   nx: false
   unrs-resolver: false
 
-# Exempt from the wait: 6 scope glob(s), 891 first-party package(s).
-# First-party membership comes from the inventory.
+# Exempt from the wait: 6 scope glob(s), 893 first-party package(s).
+# First-party membership comes from the inventory and the names claimed in pnpm-policy.yaml.
 minimumReleaseAgeExclude:
   - "@constructive-db/*"
   - "@constructive-io/*"
@@ -701,11 +701,13 @@ minimumReleaseAgeExclude:
   - graphile-realtime-subscriptions
   - graphile-realtime-test
   - graphile-schema
+  - graphile-scoped-introspection
   - graphile-search
   - graphile-search-plugin
   - graphile-settings
   - graphile-simple-inflector
   - graphile-sql-expression-validator
+  - graphile-storage-registry
   - graphile-test
   - graphile-upload-plugin
   - graphql-server-test
