@@ -54,4 +54,4 @@ jobs:
             --username ci \
             --repoName smoke-ws \
             --license MIT
-          pnpm install --lockfile-only
+          pnpm install --lockfile-only --config.minimum-release-age=0
