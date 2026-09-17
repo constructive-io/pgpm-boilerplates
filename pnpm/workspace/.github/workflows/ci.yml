@@ -14,9 +14,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package:
-          - your-module-1
-          - your-module-2
+        # Workspace-relative paths of the packages to test. `pgpm init` adds each
+        # new module here, keeping the list sorted; edit it by hand as you like.
+        # GitHub rejects an empty matrix, so this workflow is valid once the
+        # workspace has its first module.
+        package: []
 
     steps:
       - name: Checkout
@@ -48,5 +50,5 @@ jobs:
         run: pnpm -r lint
 
       - name: Test ${{ matrix.package }}
-        run: cd ./packages/${{ matrix.package }} && pnpm test
+        run: cd ./${{ matrix.package }} && pnpm test
 
