@@ -38,6 +38,36 @@ pnpm test:watch
 pnpm run audit:db
 ```
 
+### Auditing
+
+[safegres](https://www.npmjs.com/package/safegres) grades the schema this workspace
+deploys on two independent axes — security (grants, RLS, policy coverage and behavior)
+and performance (predicates no index can serve, per-row function calls, foreign keys
+without a covering index). It runs from the workspace root and needs no configuration
+per module: every module under `packages/` is deployed into one ephemeral database and
+that catalog is scanned, so a module joins the audit the moment `pgpm init` creates it.
+
+```sh
+# Audit: deploys every module into an ephemeral database and scans its catalog
+pnpm run audit:db
+
+# Accept today's performance findings as debt, so CI gates only on new ones
+pnpm run audit:db:baseline
+
+# Audit a database you already have instead
+pnpm exec safegres audit --database your_db
+```
+
+The gates and the exposed surface to grade against live in `safegres.config.js`;
+the run also writes JSON, markdown and SARIF reports to `safegres-reports/`.
+`safegres-perf-baseline.json` starts empty and is committed — it is the accepted
+performance debt, and the only audit file that carries state. CI runs the same audit
+as a single `Database audit (safegres)` job.
+
+Declaring `exposure` in the config is the first thing worth doing: until the audit
+knows which schemas and roles your API reaches it has to assume the whole database
+is, and caps the score at the `B` the gate allows.
+
 ### Using your own PostgreSQL
 
 `pgpm docker start` is a convenience, not a requirement. If PostgreSQL (17+) is already
