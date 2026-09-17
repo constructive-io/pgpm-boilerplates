@@ -24,7 +24,8 @@
     "prepack": "npm run build",
     "build": "makage build",
     "build:dev": "makage build --dev",
-    "lint": "eslint . --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch"
   },

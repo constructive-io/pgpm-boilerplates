@@ -1,0 +1,57 @@
+name: template smoke test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install pgpm CLI
+        run: npm i -g pgpm
+
+      - name: Smoke-test workspace and module templates
+        run: |
+          tmp=$(mktemp -d)
+          cd "$tmp"
+          pgpm init workspace \
+            --no-tty \
+            --name smoke-ws \
+            --fullName "CI" \
+            --email ci@example.com \
+            --username ci \
+            --repoName smoke-ws \
+            --license MIT \
+            --repo "https://github.com/${GITHUB_REPOSITORY}.git" \
+            --from-branch "${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
+          cd smoke-ws
+          pgpm init module \
+            --no-tty \
+            --moduleName smoke-mod \
+            --moduleDesc "smoke" \
+            --access restricted \
+            --packageIdentifier smoke-mod \
+            --fullName "CI" \
+            --email ci@example.com \
+            --username ci \
+            --repoName smoke-ws \
+            --license MIT
+          pnpm install --lockfile-only

@@ -9,22 +9,41 @@ on:
   workflow_dispatch:
 
 jobs:
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.list.outputs.packages }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - id: list
+        run: echo "packages=$(pnpm exec pgpm ls --paths --json)" >> "$GITHUB_OUTPUT"
+
   test:
+    needs: discover
+    if: needs.discover.outputs.packages != '[]'
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        package:
-          - your-module-1
-          - your-module-2
+        package: ${{ fromJson(needs.discover.outputs.packages) }}
 
     env:
       PGHOST: localhost
       PGPORT: 5432
       PGUSER: postgres
       PGPASSWORD: password
-      PGPM_VERSION: 5.30.6
 
     services:
       pg_db:
@@ -45,7 +64,7 @@ jobs:
         env:
           RUSTFS_ACCESS_KEY: constructive
           RUSTFS_SECRET_KEY: constructive-dev-secret
-          RUSTFS_ADDRESS: ":9000"
+          RUSTFS_ADDRESS: ':9000'
         ports:
           - 9000:9000
         options: >-
@@ -73,7 +92,7 @@ jobs:
         with:
           node-version: '22'
           cache: 'pnpm'
-      
+
       - name: Install
         run: pnpm install
 
@@ -82,29 +101,19 @@ jobs:
       - name: Check supply-chain policy
         run: pnpm run policy:check
 
-      - name: Cache pgpm CLI
-        id: cache-pgpm
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: pgpm-${{ env.PGPM_VERSION }}
-
-      - name: Install pgpm CLI globally
-        run: npm install -g pgpm@${{ env.PGPM_VERSION }}
-
       # Durability is irrelevant for throwaway CI databases. Disabling fsync
       # and synchronous commit avoids checkpoint I/O stalls on CI runners.
       - name: Tune Postgres for CI (disable durability)
-        run: pgpm tune --yes
+        run: pnpm exec pgpm tune --yes
 
       - name: Seed pg and app_user
         run: |
-          pgpm admin-users bootstrap --yes
+          pnpm exec pgpm admin-users bootstrap --yes
           # optional, but added to avoid concurrent attempts to add user
-          pgpm admin-users add --test --yes
+          pnpm exec pgpm admin-users add --test --yes
 
       - name: Test ${{ matrix.package }}
-        run: cd ./packages/${{ matrix.package }} && pnpm test
+        run: cd ./${{ matrix.package }} && pnpm test
 
   # The security + performance audit of the schema this workspace deploys
   # (safegres, configured in the root safegres.config.js): every module under
@@ -129,7 +138,6 @@ jobs:
       PGPORT: 5432
       PGUSER: postgres
       PGPASSWORD: password
-      PGPM_VERSION: 5.30.6
 
     services:
       pg_db:
@@ -163,23 +171,13 @@ jobs:
       - name: Install
         run: pnpm install
 
-      - name: Cache pgpm CLI
-        id: cache-pgpm
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: pgpm-${{ env.PGPM_VERSION }}
-
-      - name: Install pgpm CLI globally
-        run: npm install -g pgpm@${{ env.PGPM_VERSION }}
-
       - name: Tune Postgres for CI (disable durability)
-        run: pgpm tune --yes
+        run: pnpm exec pgpm tune --yes
 
       - name: Seed pg and app_user
         run: |
-          pgpm admin-users bootstrap --yes
-          pgpm admin-users add --test --yes
+          pnpm exec pgpm admin-users bootstrap --yes
+          pnpm exec pgpm admin-users add --test --yes
 
       # The action is the same `pnpm run audit:db` plus everything a run should
       # report: a job summary, inline annotations, a sticky PR comment, and the
@@ -193,4 +191,3 @@ jobs:
         with:
           version: local
           comment: true
-
