@@ -72,6 +72,13 @@ scopes:
   - "@pgpm"
   - "@pgpmjs"
   - "@pgsql"
+# Our unscoped names published after the pinned inventories above were
+# generated. A scope glob covers a scope forever, but an unscoped name is exempt
+# only once an inventory refresh has been published and re-pinned here; until
+# then it is claimed by hand so a fresh scaffold installs on the day it is made.
+packages:
+  - graphile-scoped-introspection
+  - graphile-storage-registry
 inventory:
   - "@constructive-io/pnpm-policy/inventory.json"
   - "@constructive-io/pnpm-policy-graphile/inventory.json"

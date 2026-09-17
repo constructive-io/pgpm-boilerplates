@@ -1,0 +1,108 @@
+name: Scaffold and install
+
+# Proves that what `pgpm init` produces from this branch installs against the
+# real registry, today. `pnpm install` runs with the template's own supply-chain
+# policy and no overrides, so a first-party package the policy fails to exempt
+# (a new unscoped name missing from the pinned inventory and from `packages:`
+# in pnpm-policy.yaml) fails here instead of on the next user's machine.
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  schedule:
+    # Daily: a constructive release can break a fresh scaffold with no change here.
+    - cron: '17 8 * * *'
+  workflow_dispatch:
+
+jobs:
+  scaffold:
+    name: ${{ matrix.dir }} workspace + module
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        dir:
+          - pgpm
+          - pnpm
+
+    env:
+      PGHOST: localhost
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: password
+
+    services:
+      pg_db:
+        image: constructiveio/postgres-plus:18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 3s
+          --health-timeout 5s
+          --health-retries 10
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install pgpm CLI
+        run: npm install -g pgpm@latest
+
+      - name: Scaffold workspace from this checkout
+        run: |
+          mkdir -p "$RUNNER_TEMP/scaffold"
+          cd "$RUNNER_TEMP/scaffold"
+          pgpm init workspace --repo "$GITHUB_WORKSPACE" --dir "${{ matrix.dir }}" \
+            --name demo --repoName demo --fullName "CI Test User" --email ci@example.com \
+            --username ci --license MIT --no-interactive
+
+      - name: Scaffold module inside it
+        working-directory: ${{ runner.temp }}/scaffold/demo
+        run: |
+          pgpm init --repo "$GITHUB_WORKSPACE" --dir "${{ matrix.dir }}" \
+            --name demo-module --moduleName demo-module --moduleDesc "CI module" \
+            --repoName demo --fullName "CI Test User" --email ci@example.com \
+            --username ci --access public --license MIT --no-interactive
+
+      # No --config.minimum-release-age override: this is the install a new user runs.
+      - name: pnpm install
+        working-directory: ${{ runner.temp }}/scaffold/demo
+        run: pnpm install
+
+      - name: Check supply-chain policy
+        working-directory: ${{ runner.temp }}/scaffold/demo
+        run: pnpm run policy:check
+
+      - name: Build
+        working-directory: ${{ runner.temp }}/scaffold/demo
+        run: pnpm build
+
+      - name: Seed pg and app_user
+        run: |
+          git config --global user.name "CI Test User"
+          git config --global user.email "ci@example.com"
+          pgpm admin-users bootstrap --yes
+          pgpm admin-users add --test --yes
+
+      - name: Test
+        working-directory: ${{ runner.temp }}/scaffold/demo
+        run: pnpm test
