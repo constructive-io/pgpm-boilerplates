@@ -62,9 +62,9 @@ exceptions: []
 #
 # Scopes are exempted as globs. Unscoped names come from published inventories,
 # pinned in package.json so a change in what skips the wait arrives as a version
-# bump you can review. `intersect: false` because a fresh scaffold has no lockfile
-# to intersect against yet; flip it on once you have one if you prefer a shorter
-# pnpm-workspace.yaml.
+# bump you can review. `intersect: true` keeps only the names this workspace
+# actually resolves (plus explicit `packages:` claims) out of pnpm-workspace.yaml;
+# the committed file is generated against a scaffolded workspace's lockfile.
 scopes:
   - "@constructive-io"
   - "@constructive-db"
@@ -82,4 +82,4 @@ packages:
 inventory:
   - "@constructive-io/pnpm-policy/inventory.json"
   - "@constructive-io/pnpm-policy-graphile/inventory.json"
-intersect: false
+intersect: true
