@@ -17,8 +17,7 @@
     "url": "https://github.com/____username____/____repoName____/issues"
   },
   "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watchAll"
   },
