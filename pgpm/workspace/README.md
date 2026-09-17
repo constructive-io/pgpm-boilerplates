@@ -30,8 +30,8 @@ eval "$(pgpm env)"
 # Create a module
 pgpm init
 
-# Navigate to your module (pgpm ls shows every module's path) and run tests
-cd "$(pnpm exec pgpm ls --paths | head -1)"
+# Navigate to your module and run tests
+cd packages/your-module
 pnpm test:watch
 
 # Audit every module's schema (security + performance grades, see safegres.config.js)

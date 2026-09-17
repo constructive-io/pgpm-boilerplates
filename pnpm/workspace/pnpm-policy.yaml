@@ -54,87 +54,23 @@ blockExoticSubdeps: true
 exceptions: []
 
 # Waiting on a release protects you from a compromised *third party*. The
-# toolchain this workspace runs on is published by the same people who wrote
-# this template, so it skips the wait.
+# toolchain this workspace runs on (pgpm, makage, pnpm-policy, the @pgpmjs and
+# @constructive-io packages) is published by the
+# same people who wrote this template, so those skip the wait — otherwise every
+# fresh scaffold would refuse to install for two days after each of their releases.
 #
-# Scopes are exempted as globs, and unscoped first-party names are listed under
-# `packages:`. Add a name there when a new first-party dependency shows up in
-# ERR_PNPM_NO_MATURE_MATCHING_VERSION, then run `pnpm run policy`.
+# Scopes are exempted as globs. Unscoped names come from published inventories,
+# pinned in package.json so a change in what skips the wait arrives as a version
+# bump you can review. `intersect: false` because a fresh scaffold has no lockfile
+# to intersect against yet; flip it on once you have one if you prefer a shorter
+# pnpm-workspace.yaml.
 scopes:
-  - "@agentic-kit"
   - "@constructive-io"
   - "@constructive-db"
-  - "@inquirerer"
   - "@launchql"
   - "@pgpm"
   - "@pgpmjs"
   - "@pgsql"
-packages:
-  - 12factor-env
-  - appstash
-  - confstash
-  - csv-to-pg
-  - etag-hash
-  - find-and-require-package-json
-  - genomic
-  - git-changed
-  - gql-ast
-  - grafast
-  - grafserv
-  - graphile-bucket-provisioner-plugin
-  - graphile-build
-  - graphile-build-pg
-  - graphile-bulk-mutations
-  - graphile-cache
-  - graphile-config
-  - graphile-connection-filter
-  - graphile-history
-  - graphile-i18n
-  - graphile-llm
-  - graphile-ltree
-  - graphile-meta
-  - graphile-pg-aggregates
-  - graphile-plugin-utils
-  - graphile-postgis
-  - graphile-presigned-url-plugin
-  - graphile-realtime-subscriptions
-  - graphile-scoped-introspection
-  - graphile-search
-  - graphile-settings
-  - graphile-storage-registry
-  - graphile-upload-plugin
-  - graphile-utils
-  - inflekt
-  - inquirerer
-  - komoji
-  - libpg-query
-  - makage
-  - mime-bytes
-  - nested-obj
-  - pg-ast
-  - pg-cache
-  - pg-env
-  - pg-introspection
-  - pg-proto-parser
-  - pg-query-context
-  - pg-seed
-  - pg-sql2
-  - pgpm
-  - pgsql-client
-  - pgsql-deparser
-  - pgsql-parser
-  - pgsql-seed
-  - pgsql-test
-  - plpgsql-deparser
-  - plpgsql-parser
-  - pnpm-policy
-  - postgraphile
-  - query-spec
-  - ruru
-  - ruru-types
-  - safegres
-  - strfy-js
-  - tamedevil
-  - uuid-hash
-  - yamlize
-  - yanse
+inventory:
+  - "@constructive-io/pnpm-policy/inventory.json"
+intersect: false
