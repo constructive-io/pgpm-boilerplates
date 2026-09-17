@@ -44,7 +44,6 @@ jobs:
       PGPORT: 5432
       PGUSER: postgres
       PGPASSWORD: password
-      PGPM_VERSION: 5.30.6
 
     services:
       pg_db:
@@ -102,26 +101,16 @@ jobs:
       - name: Check supply-chain policy
         run: pnpm run policy:check
 
-      - name: Cache pgpm CLI
-        id: cache-pgpm
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: pgpm-${{ env.PGPM_VERSION }}
-
-      - name: Install pgpm CLI globally
-        run: npm install -g pgpm@${{ env.PGPM_VERSION }}
-
       # Durability is irrelevant for throwaway CI databases. Disabling fsync
       # and synchronous commit avoids checkpoint I/O stalls on CI runners.
       - name: Tune Postgres for CI (disable durability)
-        run: pgpm tune --yes
+        run: pnpm exec pgpm tune --yes
 
       - name: Seed pg and app_user
         run: |
-          pgpm admin-users bootstrap --yes
+          pnpm exec pgpm admin-users bootstrap --yes
           # optional, but added to avoid concurrent attempts to add user
-          pgpm admin-users add --test --yes
+          pnpm exec pgpm admin-users add --test --yes
 
       - name: Test ${{ matrix.package }}
         run: cd ./${{ matrix.package }} && pnpm test
@@ -149,7 +138,6 @@ jobs:
       PGPORT: 5432
       PGUSER: postgres
       PGPASSWORD: password
-      PGPM_VERSION: 5.30.6
 
     services:
       pg_db:
@@ -183,23 +171,13 @@ jobs:
       - name: Install
         run: pnpm install
 
-      - name: Cache pgpm CLI
-        id: cache-pgpm
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: pgpm-${{ env.PGPM_VERSION }}
-
-      - name: Install pgpm CLI globally
-        run: npm install -g pgpm@${{ env.PGPM_VERSION }}
-
       - name: Tune Postgres for CI (disable durability)
-        run: pgpm tune --yes
+        run: pnpm exec pgpm tune --yes
 
       - name: Seed pg and app_user
         run: |
-          pgpm admin-users bootstrap --yes
-          pgpm admin-users add --test --yes
+          pnpm exec pgpm admin-users bootstrap --yes
+          pnpm exec pgpm admin-users add --test --yes
 
       # The action is the same `pnpm run audit:db` plus everything a run should
       # report: a job summary, inline annotations, a sticky PR comment, and the
