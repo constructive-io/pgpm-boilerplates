@@ -9,15 +9,28 @@ on:
   workflow_dispatch:
 
 jobs:
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.list.outputs.packages }}
+      has_packages: ${{ steps.list.outputs.has_packages }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: list
+        run: |
+          packages=$(ls -d packages/*/ 2>/dev/null | xargs -n1 basename 2>/dev/null | jq -Rsc 'split("\n")[:-1]')
+          echo "packages=${packages:-[]}" >> "$GITHUB_OUTPUT"
+          echo "has_packages=$([ "${packages:-[]}" != "[]" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
   test:
+    needs: discover
+    if: needs.discover.outputs.has_packages == 'true'
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        package:
-          - your-module-1
-          - your-module-2
+        package: ${{ fromJson(needs.discover.outputs.packages) }}
 
     env:
       PGHOST: localhost
@@ -193,4 +206,3 @@ jobs:
         with:
           version: local
           comment: true
-
