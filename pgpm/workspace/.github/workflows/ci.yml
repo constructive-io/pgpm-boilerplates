@@ -13,18 +13,25 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       packages: ${{ steps.list.outputs.packages }}
-      has_packages: ${{ steps.list.outputs.has_packages }}
     steps:
       - uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+      - name: Install
+        run: pnpm install --frozen-lockfile
       - id: list
-        run: |
-          packages=$(ls -d packages/*/ 2>/dev/null | xargs -n1 basename 2>/dev/null | jq -Rsc 'split("\n")[:-1]')
-          echo "packages=${packages:-[]}" >> "$GITHUB_OUTPUT"
-          echo "has_packages=$([ "${packages:-[]}" != "[]" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+        run: echo "packages=$(pnpm exec pgpm ls --paths --json)" >> "$GITHUB_OUTPUT"
 
   test:
     needs: discover
-    if: needs.discover.outputs.has_packages == 'true'
+    if: needs.discover.outputs.packages != '[]'
     runs-on: ubuntu-latest
 
     strategy:
@@ -58,7 +65,7 @@ jobs:
         env:
           RUSTFS_ACCESS_KEY: constructive
           RUSTFS_SECRET_KEY: constructive-dev-secret
-          RUSTFS_ADDRESS: ":9000"
+          RUSTFS_ADDRESS: ':9000'
         ports:
           - 9000:9000
         options: >-
@@ -86,7 +93,7 @@ jobs:
         with:
           node-version: '22'
           cache: 'pnpm'
-      
+
       - name: Install
         run: pnpm install
 
@@ -117,7 +124,7 @@ jobs:
           pgpm admin-users add --test --yes
 
       - name: Test ${{ matrix.package }}
-        run: cd ./packages/${{ matrix.package }} && pnpm test
+        run: cd ./${{ matrix.package }} && pnpm test
 
   # The security + performance audit of the schema this workspace deploys
   # (safegres, configured in the root safegres.config.js): every module under
