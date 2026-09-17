@@ -15,11 +15,13 @@ allowBuilds:
   nx: false
   unrs-resolver: false
 
-# Exempt from the wait: 6 scope glob(s), 68 first-party package(s).
+# Exempt from the wait: 8 scope glob(s), 68 first-party package(s).
 # First-party membership comes from the names claimed in pnpm-policy.yaml.
 minimumReleaseAgeExclude:
+  - "@agentic-kit/*"
   - "@constructive-db/*"
   - "@constructive-io/*"
+  - "@inquirerer/*"
   - "@launchql/*"
   - "@pgpm/*"
   - "@pgpmjs/*"

@@ -61,8 +61,10 @@ exceptions: []
 # `packages:`. Add a name there when a new first-party dependency shows up in
 # ERR_PNPM_NO_MATURE_MATCHING_VERSION, then run `pnpm run policy`.
 scopes:
+  - "@agentic-kit"
   - "@constructive-io"
   - "@constructive-db"
+  - "@inquirerer"
   - "@launchql"
   - "@pgpm"
   - "@pgpmjs"
