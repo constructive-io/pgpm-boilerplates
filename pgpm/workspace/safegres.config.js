@@ -10,10 +10,12 @@
  *   pnpm run audit:db            # audit + gates
  *   pnpm run audit:db:baseline   # accept today's perf findings as debt
  *
- * `source.pgpm` below means the audit needs no database of its own: this
- * module is deployed into an ephemeral one (pgsql-test) and that is what gets
- * audited, so the same command works locally and in CI. Point it at a real
- * database instead by naming a connection, which always wins over the config:
+ * `source.pgpm` below means the audit needs no database of its own: it points
+ * at this workspace, so every module under `packages/` is deployed into one
+ * ephemeral database (pgsql-test) in dependency order, and that is what gets
+ * audited — the same command works locally and in CI, and a new module joins
+ * the audit the moment `pgpm init` creates it. Point it at a real database
+ * instead by naming a connection, which always wins over the config:
  *
  *   pnpm exec safegres audit --database my_db
  */
@@ -23,7 +25,7 @@ module.exports = {
   source: { pgpm: '.' },
 
   // The pgpm ledger is the package manager's own bookkeeping — it lands in
-  // every database beside your module and is nobody's API. Audit your schema.
+  // every database beside your modules and is nobody's API. Audit your schema.
   excludeSchemas: ['pgpm_migrate'],
 
   // What your API actually exposes. Findings outside the exposed surface are

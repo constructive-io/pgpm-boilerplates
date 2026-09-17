@@ -12,14 +12,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    # `actions: read` lets the audit find the base branch's previous report to
-    # measure the delta against; `pull-requests: write` lets it post that as a
-    # sticky comment.
-    permissions:
-      actions: read
-      contents: read
-      pull-requests: write
-
     strategy:
       fail-fast: false
       matrix:
@@ -114,26 +106,91 @@ jobs:
       - name: Test ${{ matrix.package }}
         run: cd ./packages/${{ matrix.package }} && pnpm test
 
-      # The security + performance audit of the schema this module deploys
-      # (safegres, configured in the module's safegres.config.js): it deploys
-      # into an ephemeral database and scans the catalog, so it needs nothing
-      # the tests above did not already need. Gates on the security grade and
-      # on perf findings absent from the committed baseline.
-      #
+  # The security + performance audit of the schema this workspace deploys
+  # (safegres, configured in the root safegres.config.js): every module under
+  # packages/ is deployed into one ephemeral database and its catalog scanned,
+  # so it needs nothing the tests above did not already need — and nothing per
+  # module, so it is one job rather than a matrix. Gates on the security grade
+  # and on perf findings absent from the committed baseline.
+  audit:
+    name: Database audit (safegres)
+    runs-on: ubuntu-latest
+
+    # `actions: read` lets the audit find the base branch's previous report to
+    # measure the delta against; `pull-requests: write` lets it post that as a
+    # sticky comment.
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: write
+
+    env:
+      PGHOST: localhost
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: password
+      PGPM_VERSION: 5.30.6
+
+    services:
+      pg_db:
+        image: constructiveio/postgres-plus:18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 3s
+          --health-timeout 5s
+          --health-retries 10
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install
+        run: pnpm install
+
+      - name: Cache pgpm CLI
+        id: cache-pgpm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: pgpm-${{ env.PGPM_VERSION }}
+
+      - name: Install pgpm CLI globally
+        run: npm install -g pgpm@${{ env.PGPM_VERSION }}
+
+      - name: Tune Postgres for CI (disable durability)
+        run: pgpm tune --yes
+
+      - name: Seed pg and app_user
+        run: |
+          pgpm admin-users bootstrap --yes
+          pgpm admin-users add --test --yes
+
       # The action is the same `pnpm run audit:db` plus everything a run should
       # report: a job summary, inline annotations, a sticky PR comment, and the
       # delta against the base branch's last report — which it finds by
-      # downloading the reports artifact it uploads itself, one per package, so
-      # the two names have to agree. `version: local` runs the safegres this
-      # workspace pins:
-      # auditing a pgpm module deploys it through pgsql-test, an optional peer
-      # a globally installed CLI cannot resolve.
-      - name: Database audit ${{ matrix.package }}
+      # downloading the reports artifact it uploads itself. `version: local`
+      # runs the safegres this workspace pins: auditing a pgpm workspace deploys
+      # it through pgsql-test, an optional peer a globally installed CLI cannot
+      # resolve.
+      - name: Database audit
         uses: constructive-io/constructive/packages/safegres@safegres-action-v1
         with:
           version: local
-          working-directory: packages/${{ matrix.package }}
-          artifact-name: safegres-reports-${{ matrix.package }}
-          compare-artifact: safegres-reports-${{ matrix.package }}
           comment: true
 

@@ -31,30 +31,17 @@ pgpm deploy --database your_db --createdb --yes
 
 ## Auditing
 
-[safegres](https://www.npmjs.com/package/safegres) grades this module's schema on
-two independent axes — security (grants, RLS, policy coverage and behavior) and
-performance (predicates no index can serve, per-row function calls, foreign keys
-without a covering index):
+The workspace audits this module's schema together with every other module in
+`packages/`, from the workspace root — there is nothing to configure here:
 
 ```sh
-# Audit: deploys this module into an ephemeral database and scans its catalog
+# From the workspace root: deploys every module into an ephemeral database and
+# scans its catalog (security + performance grades)
 pnpm run audit:db
-
-# Accept today's performance findings as debt, so CI gates only on new ones
-pnpm run audit:db:baseline
-
-# Audit a database you already have instead
-pnpm exec safegres audit --database your_db
 ```
 
-The gates and the exposed surface to grade against live in `safegres.config.js`;
-the run also writes JSON, markdown and SARIF reports to `safegres-reports/`.
-`safegres-perf-baseline.json` starts empty and is committed — it is the accepted
-performance debt, and the only audit file that carries state.
-
-Declaring `exposure` in the config is the first thing worth doing: until the audit
-knows which schemas and roles your API reaches it has to assume the whole database
-is, and caps the score at the `B` the gate allows.
+The gates and the exposed surface to grade against live in the workspace's
+`safegres.config.js`; see the workspace README for the rest.
 
 ## Credits
 

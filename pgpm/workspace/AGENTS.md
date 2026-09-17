@@ -37,5 +37,10 @@ npx skills add https://github.com/constructive-io/constructive --skill pgpm
   you (`PGHOST`/`PGPORT`/`PGUSER`/`PGPASSWORD`), and do not stop it or start Docker on top
   of it. Only when nothing is listening: `pgpm docker start`, then `eval "$(pgpm env)"`.
   `pgpm env` prints the Docker defaults, so never run it against a developer's own server.
+- The database audit is workspace-level: `pnpm run audit:db` at the root deploys every
+  module into an ephemeral database and grades it (`safegres.config.js`). Do not add
+  per-module safegres configs or scripts — declare `exposure` and retune gates in the
+  root config, and re-run `pnpm run audit:db:baseline` (and commit the result) only when
+  deliberately accepting performance findings as debt.
 - Never run `pnpm approve-builds`. Install-script decisions live in `pnpm-policy.yaml`;
   edit that and run `pnpm run policy` (see README, "Install scripts").
