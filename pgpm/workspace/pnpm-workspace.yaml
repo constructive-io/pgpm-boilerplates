@@ -15,7 +15,7 @@ allowBuilds:
   nx: false
   unrs-resolver: false
 
-# Exempt from the wait: 6 scope glob(s), 75 first-party package(s).
+# Exempt from the wait: 6 scope glob(s), 68 first-party package(s).
 # First-party membership comes from the inventory and the names claimed in pnpm-policy.yaml.
 minimumReleaseAgeExclude:
   - "@constructive-db/*"
@@ -25,8 +25,7 @@ minimumReleaseAgeExclude:
   - "@pgpmjs/*"
   - "@pgsql/*"
   - 12factor-env
-  - "@agentic-kit/ollama"
-  - "@agentic-kit/protocol"
+  - "@agentic-kit/metering"
   - "@dataplan/json"
   - "@dataplan/pg"
   - "@graphile-contrib/pg-many-to-many"
@@ -35,7 +34,6 @@ minimumReleaseAgeExclude:
   - appstash
   - confstash
   - csv-to-pg
-  - etag-hash
   - find-and-require-package-json
   - genomic
   - git-changed
@@ -46,7 +44,6 @@ minimumReleaseAgeExclude:
   - graphile-build
   - graphile-build-pg
   - graphile-bulk-mutations
-  - graphile-cache
   - graphile-config
   - graphile-connection-filter
   - graphile-history
@@ -63,7 +60,6 @@ minimumReleaseAgeExclude:
   - graphile-search
   - graphile-settings
   - graphile-storage-registry
-  - graphile-upload-plugin
   - graphile-utils
   - inflekt
   - inquirerer
@@ -76,7 +72,6 @@ minimumReleaseAgeExclude:
   - pg-cache
   - pg-env
   - pg-introspection
-  - pg-proto-parser
   - pg-query-context
   - pg-seed
   - pg-sql2
@@ -94,8 +89,6 @@ minimumReleaseAgeExclude:
   - ruru
   - ruru-types
   - safegres
-  - strfy-js
   - tamedevil
-  - uuid-hash
   - yamlize
   - yanse
