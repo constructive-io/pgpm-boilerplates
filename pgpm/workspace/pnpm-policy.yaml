@@ -35,6 +35,7 @@ settings:
   allowBuilds:
     "@launchql/protobufjs": false # postinstall only prints a version-scheme notice
     "@parcel/watcher": false # prebuilt binary ships as an optional dep
+    esbuild: false # prebuilt binary ships as an optional dep
     nx: false # prebuilt binary ships as an optional dep
     unrs-resolver: false # prebuilt binary ships as an optional dep
 
