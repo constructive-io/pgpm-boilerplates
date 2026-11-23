@@ -12,6 +12,7 @@ blockExoticSubdeps: true
 allowBuilds:
   "@launchql/protobufjs": false
   "@parcel/watcher": false
+  esbuild: false
   nx: false
   unrs-resolver: false
 
