@@ -14,7 +14,7 @@ allowBuilds:
   nx: false
   unrs-resolver: false
 
-# Exempt from the wait: 6 scope glob(s), 6 first-party package(s).
+# Exempt from the wait: 6 scope glob(s), 7 first-party package(s).
 # First-party membership comes from the inventory and the names claimed in pnpm-policy.yaml.
 minimumReleaseAgeExclude:
   - "@constructive-db/*"
@@ -23,6 +23,7 @@ minimumReleaseAgeExclude:
   - "@pgpm/*"
   - "@pgpmjs/*"
   - "@pgsql/*"
+  - "@agentic-kit/metering"
   - graphile-scoped-introspection
   - graphile-storage-registry
   - makage
